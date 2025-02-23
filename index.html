@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Terminator" />
+    <meta name="viewport" content="width=device-width" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://vm.frogiee1.com/favicon.png"
+    />
+    <meta name="generator" content="Astro v4.6.1" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+      integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css"
+      rel="stylesheet"
+    />
+    <title>frogie's arcade</title>
+    <style>
+      body {
+        background-color: #000000;
+      }
+      [data-simplebar] {
+        align-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        position: relative;
+      }
+      .simplebar-wrapper {
+        height: inherit;
+        max-height: inherit;
+        max-width: inherit;
+        overflow: hidden;
+        width: inherit;
+      }
+      .simplebar-mask {
+        direction: inherit;
+        height: auto !important;
+        overflow: hidden;
+        width: auto !important;
+        z-index: 0;
+      }
+      .simplebar-mask,
+      .simplebar-offset {
+        inset: 0;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+      }
+      .simplebar-offset {
+        box-sizing: inherit !important;
+        direction: inherit !important;
+        resize: none !important;
+        -webkit-overflow-scrolling: touch;
+      }
+      .simplebar-content-wrapper {
+        box-sizing: border-box !important;
+        direction: inherit;
+        display: block;
+        height: 100%;
+        max-height: 100%;
+        max-width: 100%;
+        overflow: auto;
+        position: relative;
+        scrollbar-width: none;
+        width: auto;
+        -ms-overflow-style: none;
+      }
+      .simplebar-content-wrapper::-webkit-scrollbar,
+      .simplebar-hide-scrollbar::-webkit-scrollbar {
+        display: none;
+        height: 0;
+        width: 0;
+      }
+      .simplebar-content:after,
+      .simplebar-content:before {
+        content: " ";
+        display: table;
+      }
+      .simplebar-placeholder {
+        max-height: 100%;
+        max-width: 100%;
+        pointer-events: none;
+        width: 100%;
+      }
+      .simplebar-height-auto-observer-wrapper {
+        box-sizing: inherit !important;
+        flex-basis: 0;
+        flex-grow: inherit;
+        flex-shrink: 0;
+        float: left;
+        height: 100%;
+        margin: 0;
+        max-height: 1px;
+        max-width: 1px;
+        overflow: hidden;
+        padding: 0;
+        pointer-events: none;
+        position: relative;
+        width: 100%;
+        z-index: -1;
+      }
+      .simplebar-height-auto-observer {
+        box-sizing: inherit;
+        display: block;
+        height: 1000%;
+        left: 0;
+        min-height: 1px;
+        min-width: 1px;
+        opacity: 0;
+        top: 0;
+        width: 1000%;
+        z-index: -1;
+      }
+      .simplebar-height-auto-observer,
+      .simplebar-track {
+        overflow: hidden;
+        pointer-events: none;
+        position: absolute;
+      }
+      .simplebar-track {
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+      }
+      [data-simplebar].simplebar-dragging,
+      [data-simplebar].simplebar-dragging .simplebar-content {
+        pointer-events: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+      [data-simplebar].simplebar-dragging .simplebar-track {
+        pointer-events: all;
+      }
+      .simplebar-scrollbar {
+        left: 0;
+        min-height: 10px;
+        position: absolute;
+        right: 0;
+      }
+      .simplebar-scrollbar:before {
+        background: #000;
+        border-radius: 7px;
+        content: "";
+        opacity: 0;
+        position: absolute;
+        transition: opacity 0.2s linear 0.5s;
+      }
+      .simplebar-scrollbar.simplebar-visible:before {
+        opacity: 0.5;
+        transition-delay: 0s;
+        transition-duration: 0s;
+      }
+      .simplebar-track.simplebar-vertical {
+        top: 0;
+        width: 11px;
+      }
+      .simplebar-scrollbar:before {
+        inset: 2px;
+      }
+      .simplebar-track.simplebar-horizontal {
+        height: 11px;
+        left: 0;
+      }
+      .simplebar-track.simplebar-horizontal .simplebar-scrollbar {
+        inset: 0 auto 0 0;
+        min-height: 0;
+        min-width: 10px;
+        width: auto;
+      }
+      [data-simplebar-direction="rtl"] .simplebar-track.simplebar-vertical {
+        left: 0;
+        right: auto;
+      }
+      .simplebar-dummy-scrollbar-size {
+        direction: rtl;
+        height: 500px;
+        opacity: 0;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        position: fixed;
+        visibility: hidden;
+        width: 500px;
+        -ms-overflow-style: scrollbar !important;
+      }
+      .simplebar-dummy-scrollbar-size > div {
+        height: 200%;
+        margin: 10px 0;
+        width: 200%;
+      }
+      .simplebar-hide-scrollbar {
+        left: 0;
+        overflow-y: scroll;
+        position: fixed;
+        scrollbar-width: none;
+        visibility: hidden;
+        -ms-overflow-style: none;
+      }
+      .toastify {
+        background: linear-gradient(135deg, #73a5ff, #5477f5);
+        border-radius: 2px;
+        box-shadow:
+          0 3px 6px -1px #0000001f,
+          0 10px 36px -4px #4d60e84d;
+        color: #202020;
+        cursor: pointer;
+        display: inline-block;
+        max-width: calc(50% - 20px);
+        opacity: 0;
+        padding: 12px 20px;
+        position: fixed;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+        z-index: 2147483647;
+      }
+      .toastify.on {
+        opacity: 1;
+      }
+      .toast-close {
+        background: transparent;
+        border: 0;
+        color: #fff;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 1em;
+        opacity: 0.4;
+        padding: 0 5px;
+      }
+      .toastify-right {
+        right: 15px;
+      }
+      .toastify-left {
+        left: 15px;
+      }
+      .toastify-top {
+        top: -150px;
+      }
+      .toastify-bottom {
+        bottom: -150px;
+      }
+      .toastify-rounded {
+        border-radius: 25px;
+      }
+      .toastify-avatar {
+        border-radius: 2px;
+        height: 1.5em;
+        margin: -7px 5px;
+        width: 1.5em;
+      }
+      .toastify-center {
+        left: 0;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: fit-content;
+        max-width: -moz-fit-content;
+        right: 0;
+      }
+      @media only screen and (max-width: 360px) {
+        .toastify-left,
+        .toastify-right {
+          left: 0;
+          margin-left: auto;
+          margin-right: auto;
+          max-width: -moz-fit-content;
+          max-width: fit-content;
+          right: 0;
+        }
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://vm.frogiee1.com/_astro/index.Dr9sawZQ.css"
+    />
+    <script
+      type="module"
+      src="https://vm.frogiee1.com/_astro/hoisted.ClwGHnN5.js"
+    ></script>
+  </head>
+  <body>
+    <main
+      data-astro-cid-ct3bgug4
+      style="
+        --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+        --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+      "
+    >
+      <article
+        id="window"
+        data-astro-cid-ct3bgug4
+        style="
+          --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+          --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+          background-color: #202020;
+        "
+      >
+        <div
+          class="container"
+          data-astro-cid-ct3bgug4
+          style="
+            --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+            --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+          "
+        >
+          <p
+            class="queue"
+            data-astro-cid-ct3bgug4
+            style="
+              --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+              --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+            "
+          ></p>
+          <div
+            class="buttons"
+            data-astro-cid-ct3bgug4
+            style="
+              --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+              --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+            "
+          >
+            <button
+              class="button"
+              data-type="windows"
+              data-astro-cid-ct3bgug4
+              style="
+                --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+                --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+              "
+            >
+              windows
+            </button>
+            <button
+              class="button"
+              data-type="linux"
+              data-astro-cid-ct3bgug4
+              style="
+                --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+                --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+              "
+            >
+              debian
+            </button>
+          </div>
+          <div
+            id="captcha"
+            style="
+              display: none;
+              --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+              --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+            "
+            data-astro-cid-ct3bgug4
+          ></div>
+          <div
+            class="terminal"
+            id="terminal"
+            style="
+              display: none;
+              visibility: hidden;
+              --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+              --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+            "
+            data-astro-cid-ct3bgug4
+          ></div>
+        </div>
+        <div
+          class="footer"
+          data-astro-cid-ct3bgug4
+          style="
+            --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+            --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+          "
+        >
+          <p
+            class="footer-text"
+            id="timer"
+            data-astro-cid-ct3bgug4
+            style="
+              --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+              --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+            "
+          ></p>
+          <button
+            class="stop-button"
+            data-astro-cid-ct3bgug4
+            style="
+              --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+              --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+            "
+          >
+            <picture>
+              <source
+                srcset="https://vm.frogiee1.com/_astro/bin.CJRgIcyU_Fns7C.webp"
+                type="image/webp"
+              />
+              <img
+                src="https://vm.frogiee1.com/_astro/bin.CJRgIcyU_1mPz8F.png"
+                alt="Trash can"
+                data-astro-cid-ct3bgug4
+                width="32"
+                height="32"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+            <span
+              data-astro-cid-ct3bgug4
+              style="
+                --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+                --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+              "
+              >delete session</span
+            >
+          </button>
+          <p
+            class="footer-text"
+            data-astro-cid-ct3bgug4
+            style="
+              --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+              --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+            "
+          >
+            <span
+              id="ping-text"
+              data-astro-cid-ct3bgug4
+              style="
+                --dogfarts: url(https://vm.frogiee1.com/_astro/dogfarts.CozhRaNV.gif);
+                --golf: url(https://vm.frogiee1.com/_astro/golf.C3qJ8AI3.gif);
+              "
+              >...</span
+            >
+            ms
+          </p>
+        </div>
+      </article>
+    </main>
+    <script
+      src="https://js.hcaptcha.com/1/api.js?render=explicit"
+      async
+      defer
+    ></script>
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "ecafbce4a39741e197e64e7ffa5beb5b"}'
+    ></script>
+  </body>
+</html>
